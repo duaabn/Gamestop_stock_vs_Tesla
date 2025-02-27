@@ -1,10 +1,16 @@
 # Gamestop_stock_vs_Tesla
 import yfinance as yf
+
 import pandas as pd
+
 import requests
+
 from bs4 import BeautifulSoup
+
 import plotly.graph_objects as go
+
 from plotly.subplots import make_subplots
+
 import warnings
 
 import plotly.io as pio
@@ -22,10 +28,11 @@ def get_stock_data(ticker):
 tesla_data = get_stock_data("TSLA")
 print(tesla_data.head())
 
-#2: Use Webscraping to Extract Tesla Revenue Data
+# 2: Use Webscraping to Extract Tesla Revenue Data
 
 tesla_revenue = pd.DataFrame(columns=["Date", "Revenue"])
 url = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/revenue.htm"
+
 response = requests.get(url)
 html_data = response.text
 soup = BeautifulSoup(html_data, 'html.parser')
@@ -51,8 +58,9 @@ gme_data.reset_index(inplace=True)
 print(gme_data.head())
 
 
-#4 Use Webscraping to Extract GME Revenue Data
+# 4 Use Webscraping to Extract GME Revenue Data
 url = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/stock.html"
+
 response = requests.get(url)
 html_data_2 = response.text
 soup = BeautifulSoup(html_data_2, 'html.parser')
@@ -97,7 +105,7 @@ def make_graph(stock_data, revenue_data, stock_name):
 
 make_graph(tesla_data, tesla_revenue, "Tesla")
 
-#6: Plot GameStop Stock Graph
+# 6: Plot GameStop Stock Graph
 def make_graph(stock_data, revenue_data, stock_name):
     fig = make_subplots(rows=2, cols=1, shared_xaxes=True, subplot_titles=("Historical Share Price", "Historical Revenue"), vertical_spacing=.3)
 
