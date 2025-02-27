@@ -14,6 +14,7 @@ from plotly.subplots import make_subplots
 import warnings
 
 import plotly.io as pio
+
 pio.renderers.default = "browser"
 
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -21,20 +22,27 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 # 1: Use yfinance to Extract Stock Dat
 
 def get_stock_data(ticker):
+
     stock = yf.Ticker(ticker)
+    
     stock_data = stock.history(period="max")
+    
     stock_data.reset_index(inplace=True)
+    
     return stock_data
+    
 tesla_data = get_stock_data("TSLA")
+
 print(tesla_data.head())
 
 # 2: Use Webscraping to Extract Tesla Revenue Data
 
-tesla_revenue = pd.DataFrame(columns=["Date", "Revenue"])
 url = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/revenue.htm"
 
 response = requests.get(url)
+
 html_data = response.text
+
 soup = BeautifulSoup(html_data, 'html.parser')
 
 table = soup.find_all('table')[1]  
@@ -46,15 +54,21 @@ for row in table_body.find_all('tr'):
     tesla_revenue = pd.concat([tesla_revenue, pd.DataFrame({"Date": [date], "Revenue": [revenue]})], ignore_index=True)
 
 tesla_revenue["Revenue"] = tesla_revenue['Revenue'].str.replace(r',|\$', "", regex=True)
+
 tesla_revenue.dropna(inplace=True)
+
 tesla_revenue = tesla_revenue[tesla_revenue['Revenue'] != ""] 
+
 print(tesla_revenue.tail())
 
  
 # 3: Use yfinance to Extract Stock Data
 gme = yf.Ticker("GME")
+
 gme_data = gme.history(period="max")
+
 gme_data.reset_index(inplace=True)
+
 print(gme_data.head())
 
 
@@ -62,8 +76,11 @@ print(gme_data.head())
 url = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/stock.html"
 
 response = requests.get(url)
+
 html_data_2 = response.text
+
 soup = BeautifulSoup(html_data_2, 'html.parser')
+
 table_body = soup.find_all("tbody")[1]
 data = []
 for row in table_body.find_all("tr"):
